@@ -1,0 +1,5 @@
+---
+- hosts: all
+
+  roles:
+    - gcoop-libre.test_users

@@ -1,0 +1,19 @@
+---
+
+test_user_id: True
+test_user_su: True
+
+log_file: /var/log/auth.log
+log_path: /tmp
+log_id_files: []
+log_su_files: []
+log_local: "{{ playbook_dir }}"
+write_test_log: True
+
+login_timeout: 60
+login_password: DefaultSecret
+
+login_users:
+  - username: alice
+    password: CustomSecret
+  - username: bob

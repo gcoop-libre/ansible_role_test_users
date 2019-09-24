@@ -1,0 +1,18 @@
+dependencies: []
+
+galaxy_info:
+  author: Osiris Alejandro Gomez
+  role_name: test_users
+  description: Ansible role for test system users
+  company: gcoop Cooperativa de Software Libre
+  license: GPLv3
+  min_ansible_version: 2.7.1
+  platforms:
+    - name: Ubuntu
+      versions:
+        - bionic
+  galaxy_tags:
+    - id
+    - login
+    - su
+    - users

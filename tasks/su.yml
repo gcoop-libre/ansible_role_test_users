@@ -1,0 +1,40 @@
+---
+
+- name: "Count test su lines of {{ log_file }}"
+  command: "wc -l {{ log_file }}"
+  register: log_file_result
+  changed_when: False
+  become: yes
+  when: write_test_log
+
+- name: Define log_lines
+  set_fact:
+    log_lines: "{{ log_file_result.stdout.split()[0] }}"
+  when: write_test_log
+
+- name: "su user {{ item.username }}"
+  expect:
+    command: "su -c pwd - {{ item.username }}"
+    timeout: "{{ login_timeout | default(omit) }}"
+    responses:
+      (?i)Password: "{{ item.password | default(login_password) }}"
+  no_log: true
+  environment:
+    LC_ALL: en_US.UTF-8
+    LANGUAGE: en_US.UTF-8
+
+- name: Define log_test_file
+  set_fact:
+    log_test_file: "{{ log_path + '/' + 'test-su-user.' + ( item.username | string ) + '.log' }}"
+  when: write_test_log
+
+- name: Define log_su_files
+  set_fact:
+    log_su_files: "{{ log_su_files + [ log_test_file ] }}"
+  when: write_test_log
+
+- name: "Copy test su lines of {{ log_file }} to {{ log_test_file }}"
+  shell: "tail -n +{{ log_lines }} {{ log_file }} > {{ log_test_file }}"
+  changed_when: False
+  become: yes
+  when: write_test_log

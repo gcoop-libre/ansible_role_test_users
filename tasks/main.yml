@@ -1,0 +1,28 @@
+---
+
+- include_tasks: id.yml
+  with_items:
+    - "{{ login_users }}"
+  when: test_user_id
+  ignore_errors: true
+
+- name: Get test id logs
+  fetch:
+    src: "{{ item }}"
+    dest: "{{ log_local }}"
+  with_items:
+    - "{{ log_id_files }}"
+  when: test_user_id
+
+- include_tasks: su.yml
+  with_items:
+    - "{{ login_users }}"
+  when: test_user_su
+
+- name: Get test su logs
+  fetch:
+    src: "{{ item }}"
+    dest: "{{ log_local }}"
+  with_items:
+    - "{{ log_su_files }}"
+  when: test_user_su
